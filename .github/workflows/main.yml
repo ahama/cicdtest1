@@ -31,5 +31,7 @@ jobs:
         run: |
           set -x
           ls $GITHUB_WORKSPACE
+          curl https://cicd-test-1.s3.abci.ai/status.md > $GITHUB_WORKSPACE/content/status.md
+          cat $GITHUB_WORKSPACE/content/status.md
         shell: bash          
 
