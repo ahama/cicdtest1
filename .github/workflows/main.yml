@@ -4,8 +4,8 @@ name: CI
 
 # Controls when the action will run. 
 on:
-  schedule:
-    - cron: '30 * * * *'
+  #schedule:
+  #  - cron: '30 * * * *'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -15,7 +15,8 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-18.04
+    #runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -34,4 +35,11 @@ jobs:
           curl https://cicd-test-1.s3.abci.ai/status.md > $GITHUB_WORKSPACE/content/status.md
           cat $GITHUB_WORKSPACE/content/status.md
         shell: bash          
+
+      - name: Slack Notification Test
+        uses: rtCamp/action-slack-notify@v2
+        env: 
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_MESSAGE: 'ghtest'
+
 
