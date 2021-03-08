@@ -37,8 +37,8 @@ jobs:
           git config --local user.email "github-action@example.com"
           git config --local user.name "github action workflow main"
           git add $GITHUB_WORKSPACE/content/status.md
-          git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md
-          git push origin master
+          git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md || true
+          git push origin master || true
         shell: bash          
 
       #- name: Slack Notification Test
