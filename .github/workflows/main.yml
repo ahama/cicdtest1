@@ -54,4 +54,10 @@ jobs:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
             SLACK_MESSAGE: 'ghtest failed'
 
+      - name: Slack Notification Test
+        if: failure()
+        run: |
+          echo err
+          exit 0
+
 
