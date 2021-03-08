@@ -18,6 +18,10 @@ jobs:
     #runs-on: ubuntu-18.04
     runs-on: ubuntu-20.04
 
+    #outputs:
+
+    continue-on-error: true
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -29,6 +33,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
+        id: update_code
         run: |
           set -x
           ls $GITHUB_WORKSPACE
@@ -37,8 +42,12 @@ jobs:
           git config --local user.email "github-action@example.com"
           git config --local user.name "github action workflow main"
           git add $GITHUB_WORKSPACE/content/status.md
-          git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md || true
-          git push origin master || true
+          #git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md || true
+          #git push origin master || true
+          git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md && git push origin master
+          RES="$?"
+          echo "::set-output name=rcode::$RES"
+          exit 0
         shell: bash          
 
       #- name: Slack Notification Test
@@ -48,16 +57,17 @@ jobs:
       #      SLACK_MESSAGE: '<!channel> ghtest'
 
       - name: Slack Notification Test
-        if: failure()
+        #if: failure()
+        if: contains(steps.update_code.outputs.rcode, '1')
         uses: rtCamp/action-slack-notify@v2
         env:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-            SLACK_MESSAGE: 'ghtest failed'
+            SLACK_MESSAGE: "ghtest failed ${{ steps.update_code.outputs.rcode }}"
 
-      - name: Slack Notification Test
-        if: failure()
-        run: |
-          echo err
-          exit 0
+      #- name: Slack Notification Test
+      #  if: failure()
+      #  run: |
+      #    echo err
+      #    exit 0
 
 
