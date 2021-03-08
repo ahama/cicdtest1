@@ -58,7 +58,8 @@ jobs:
 
       - name: Slack Notification Test
         #if: failure()
-        if: contains(steps.update_code.outputs.rcode, '1')
+        #if: contains(steps.update_code.outputs.rcode, '1')
+        if: steps.update_code.outputs.rcode == '1'
         uses: rtCamp/action-slack-notify@v2
         env:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
