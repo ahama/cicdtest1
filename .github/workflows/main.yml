@@ -34,12 +34,16 @@ jobs:
           ls $GITHUB_WORKSPACE
           curl https://cicd-test-1.s3.abci.ai/status.md > $GITHUB_WORKSPACE/content/status.md
           cat $GITHUB_WORKSPACE/content/status.md
+          git config --local user.email "github-action@example.com"
+          git config --local user.name "github action workflow main"
+          git commit -m "auto build" $GITHUB_WORKSPACE/content/status.md
+          git push origin master
         shell: bash          
 
-      - name: Slack Notification Test
-        uses: rtCamp/action-slack-notify@v2
-        env: 
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
-            SLACK_MESSAGE: '<!channel> ghtest'
+      #- name: Slack Notification Test
+      #  uses: rtCamp/action-slack-notify@v2
+      #  env:
+      #      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #      SLACK_MESSAGE: '<!channel> ghtest'
 
 
