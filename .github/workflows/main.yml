@@ -47,4 +47,11 @@ jobs:
       #      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
       #      SLACK_MESSAGE: '<!channel> ghtest'
 
+      - name: Slack Notification Test
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_MESSAGE: 'ghtest failed'
+
 
